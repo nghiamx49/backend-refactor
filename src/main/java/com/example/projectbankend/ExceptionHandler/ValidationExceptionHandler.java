@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -12,10 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -43,9 +41,12 @@ public class ValidationExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public void constraintViolationException(HttpServletResponse response) throws IOException {
-        response.sendError(HttpStatus.BAD_REQUEST.value());
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<?> exception(ConstraintViolationException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 400);
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
-
 
 }

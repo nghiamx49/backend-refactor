@@ -17,6 +17,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     List<User> findAllByBan(boolean status);
 
+    User findById(int Id);
+
     @Modifying
     @Query(value = "UPDATE  users SET ban = true WHERE id = ?1", nativeQuery = true)
     void banUser(int id);

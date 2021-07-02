@@ -46,7 +46,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
             }
         }
         catch (ExpiredJwtException e) {
-            request.setAttribute("expired", e.getMessage());
+            request.setAttribute("expired", "token hết hạn hoặc không còn giá trị, vui lòng đăng nhập lại");
         }
         filterChain.doFilter(request, response);
     }

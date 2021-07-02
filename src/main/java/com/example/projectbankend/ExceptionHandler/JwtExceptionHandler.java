@@ -18,7 +18,7 @@ public class JwtExceptionHandler implements AuthenticationEntryPoint {
         if (expired!=null){
             httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED,expired);
         }else{
-            httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Invalid Login details");
+            httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Đăng nhập không thành công");
         }
     }
 }

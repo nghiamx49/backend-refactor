@@ -45,14 +45,12 @@ public class JwtUtil {
         Map<String, Object> header = new HashMap<>();
         header.put("alg", "HS256");
         header.put("typ", "JWT");
-        long issueAt = System.currentTimeMillis();
-        long expiredTime = issueAt + 86400;
-        return Jwts.builder().setClaims(claims)
+                return Jwts.builder().setClaims(claims)
                 .setHeader(header)
                 .setSubject(subject)
-                .setIssuedAt(new Date(issueAt))
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(SignatureAlgorithm.HS256, secret)
-                .setExpiration(new Date(expiredTime))
+                .setExpiration(new Date(System.currentTimeMillis() + Integer.parseInt("86400")))
                 .compact();
     }
 

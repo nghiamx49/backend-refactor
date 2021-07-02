@@ -1,5 +1,6 @@
 package com.example.projectbankend.Config;
 
+import com.example.projectbankend.ExceptionHandler.JwtExceptionHandler;
 import com.example.projectbankend.Filter.AuthorizationFilter;
 import com.example.projectbankend.Services.AuthenticateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthorizationFilter authorizationFilter;
     @Autowired
     private AuthenticateService authenticateService;
+    @Autowired
+    private JwtExceptionHandler jwtExceptionHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,16 +45,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().exceptionHandling()
-                .and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.httpBasic().authenticationEntryPoint(jwtExceptionHandler);
 
         http.authorizeRequests().antMatchers("/api/authenticate/**/**").permitAll();
 
         http.authorizeRequests().antMatchers("/api/admin/**").hasAuthority("admin");
         http.authorizeRequests().antMatchers("/api/user/**").hasAuthority("user");
-        http.authorizeRequests().antMatchers("/api/provider/**").permitAll();//hasAuthority("provider");
+        http.authorizeRequests().antMatchers("/api/provider/**").hasAuthority("provider");
         http.authorizeRequests().antMatchers("/api/**").permitAll();
-
 
         http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }

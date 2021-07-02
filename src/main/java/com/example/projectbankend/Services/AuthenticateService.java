@@ -1,6 +1,7 @@
 package com.example.projectbankend.Services;
 
 import com.example.projectbankend.DTO.AccountDTO;
+import com.example.projectbankend.ExceptionHandler.NotFoundException;
 import com.example.projectbankend.Mapper.AccountMapper;
 import com.example.projectbankend.Models.Account;
 import com.example.projectbankend.Models.Role;
@@ -50,6 +51,7 @@ public class AuthenticateService implements UserDetailsService {
 
     public boolean checkLogin(LoginRequest loginRequest) {
         Account account = accountRepository.findByUsername(loginRequest.getUsername());
+        if(account == null) throw new NotFoundException("không tìm thấy tài khoản");
         return account != null && passwordEncoder.matches(loginRequest.getPassword(), account.getPassword());
     }
 
@@ -86,7 +88,6 @@ public class AuthenticateService implements UserDetailsService {
             );
             Account providerAccount = accountRepository.findByUsername(providerRegister.getUsername());
             providerRepository.createProvider(
-                    providerRegister.getBank_account_number(),
                     providerRegister.getOwner(),
                     providerRegister.getStore_name(),
                     providerAccount.getId()

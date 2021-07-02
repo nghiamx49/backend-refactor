@@ -30,13 +30,13 @@ public class AuthenticateController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         Map<String, Object> response = new HashMap<>();
         if(authenticateService.checkLogin(loginRequest)) {
-            response.put("message", "login successfully");
+            response.put("message", "đăng nhập thành công");
             response.put("token", jwtUtil.generateToken(loginRequest.getUsername()));
             response.put("account", authenticateService.accountDetail(loginRequest.getUsername()));
             response.put("isLoggedIn", true);
         }
         else {
-            response.put("message", "login failed");
+            response.put("message", "đăng nhập thất bại");
             response.put("isLoggedIn", false);
         }
         return  ResponseEntity.status(HttpStatus.OK).body(response);

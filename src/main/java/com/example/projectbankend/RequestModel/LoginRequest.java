@@ -6,8 +6,8 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class LoginRequest {
-    @NotBlank(message = "ten dang nhap khong the de trong")
+    @NotBlank(message = "tên đăng nhập không thể để trống")
     private String username;
-    @NotBlank(message = "mat khau khong the de trong")
+    @NotBlank(message = "mật khẩu không thể để trống")
     private String password;
 }

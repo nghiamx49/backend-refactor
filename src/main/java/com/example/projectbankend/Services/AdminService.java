@@ -3,6 +3,7 @@ package com.example.projectbankend.Services;
 import com.example.projectbankend.DTO.ProductDTO;
 import com.example.projectbankend.DTO.ProviderDTO;
 import com.example.projectbankend.DTO.UserDTO;
+import com.example.projectbankend.ExceptionHandler.NotFoundException;
 import com.example.projectbankend.Mapper.ProductMapper;
 import com.example.projectbankend.Mapper.ProviderMapper;
 import com.example.projectbankend.Mapper.UserMapper;
@@ -41,6 +42,8 @@ public class AdminService {
     }
 
     public void updateProviderStatus(UpdateStatus updateStatus) throws Exception{
+        if(productRepository.findById(updateStatus.getId()) == null)
+        throw new NotFoundException("không tìm thấy tài khoản nhà cung cấp");
         try {
             providerRepository.updateRegisterStatus(updateStatus.getId(), updateStatus.getStatus());
         }
@@ -59,6 +62,7 @@ public class AdminService {
     }
 
     public void banUser(int userId) throws Exception {
+        if(userRepository.findById(userId) == null) throw new NotFoundException("không tìm thấy tài khoản người dùng");
         try {
             userRepository.banUser(userId);
         }
@@ -77,6 +81,7 @@ public class AdminService {
     }
 
     public void updateProductStatus(UpdateStatus updateStatus) throws Exception {
+
         try{
             productRepository.updateProductStatus(updateStatus.getId(), updateStatus.getStatus());
         }
