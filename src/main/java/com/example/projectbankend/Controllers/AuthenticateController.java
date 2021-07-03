@@ -1,9 +1,12 @@
 package com.example.projectbankend.Controllers;
 
+import com.example.projectbankend.DTO.Response;
 import com.example.projectbankend.RequestModel.LoginRequest;
 import com.example.projectbankend.RequestModel.ProviderRegister;
 import com.example.projectbankend.RequestModel.UserRegister;
 import com.example.projectbankend.Services.AuthenticateService;
+import com.example.projectbankend.Services.MailService;
+import com.example.projectbankend.Services.VerifyMail;
 import com.example.projectbankend.Utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,8 @@ public class AuthenticateController {
     private AuthenticateService authenticateService;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private MailService mailService;
 
     @PostMapping("login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
@@ -68,5 +73,11 @@ public class AuthenticateController {
         catch (Exception e) {
             throw new Exception(e.getMessage());
         }
+    }
+
+    @PostMapping("verify_mail")
+    public ResponseEntity<?> verifyMail(@RequestBody VerifyMail verifyMail) throws Exception {
+        Map<String, Object> data = mailService.sendMail(verifyMail.getEmail());
+        return ResponseEntity.ok(Response.response(data));
     }
 }
