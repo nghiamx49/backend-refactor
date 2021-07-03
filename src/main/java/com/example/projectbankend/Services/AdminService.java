@@ -2,6 +2,7 @@ package com.example.projectbankend.Services;
 
 import com.example.projectbankend.DTO.ProductDTO;
 import com.example.projectbankend.DTO.ProviderDTO;
+import com.example.projectbankend.DTO.RateDTO;
 import com.example.projectbankend.DTO.UserDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
 import com.example.projectbankend.Mapper.ProductMapper;
@@ -9,9 +10,11 @@ import com.example.projectbankend.Mapper.ProviderMapper;
 import com.example.projectbankend.Mapper.UserMapper;
 import com.example.projectbankend.Models.Product;
 import com.example.projectbankend.Models.Provider;
+import com.example.projectbankend.Models.Rate;
 import com.example.projectbankend.Models.User;
 import com.example.projectbankend.Repository.ProductRepository;
 import com.example.projectbankend.Repository.ProviderRepository;
+import com.example.projectbankend.Repository.RatingRepository;
 import com.example.projectbankend.Repository.UserRepository;
 import com.example.projectbankend.RequestModel.UpdateStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +36,8 @@ public class AdminService {
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
-
+    @Autowired
+    private RatingRepository ratingRepository;
 
     public List<ProviderDTO> findAllProviderByStatus(String status, Integer page) {
         Pageable paging = PageRequest.of(page, 10);

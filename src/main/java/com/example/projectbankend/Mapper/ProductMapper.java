@@ -1,8 +1,12 @@
 package com.example.projectbankend.Mapper;
 
+import com.example.projectbankend.DTO.ImageDTO;
 import com.example.projectbankend.DTO.ProductDTO;
+import com.example.projectbankend.DTO.ProductDetailDTO;
+import com.example.projectbankend.DTO.RateDTO;
 import com.example.projectbankend.Models.Product;
 import com.example.projectbankend.Models.ProductImage;
+import com.example.projectbankend.Models.Rate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,23 @@ public class ProductMapper {
         productDTOs.setName(product.getName());
         productDTOs.setUnit_price(product.getUnit_price());
         return productDTOs;
+    }
 
+    public static ProductDetailDTO toProductDetailDTO(Product product, List<RateDTO> rates) {
+        ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+        productDetailDTO.setId(product.getId());
+        productDetailDTO.setProduct_quantity(product.getQuantity());
+        Set<ProductImage> setImage = product.getImages();
+        List<ImageDTO> imageLink = new ArrayList<>();
+        for(ProductImage productImage: setImage) {
+            imageLink.add(ImageMapper.imageDTO(productImage));
+        }
+        productDetailDTO.setImage_sources((ArrayList<ImageDTO>) imageLink);
+        productDetailDTO.setNumber_of_sold(product.getNumber_of_sold());
+        productDetailDTO.setProvider_name(product.getProvider().getStore_name());
+        productDetailDTO.setName(product.getName());
+        productDetailDTO.setUnit_price(product.getUnit_price());
+        productDetailDTO.setRating((ArrayList<RateDTO>) rates);
+        return productDetailDTO;
     }
 }

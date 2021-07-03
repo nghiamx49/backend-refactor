@@ -1,12 +1,10 @@
 package com.example.projectbankend.Services;
 
 import com.example.projectbankend.DTO.ProductDTO;
+import com.example.projectbankend.DTO.RateDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
 import com.example.projectbankend.Mapper.ProductMapper;
-import com.example.projectbankend.Models.Account;
-import com.example.projectbankend.Models.Category;
-import com.example.projectbankend.Models.Product;
-import com.example.projectbankend.Models.Provider;
+import com.example.projectbankend.Models.*;
 import com.example.projectbankend.Repository.*;
 import com.example.projectbankend.RequestModel.CreateProduct;
 import com.example.projectbankend.RequestModel.UpdateProduct;
@@ -30,7 +28,7 @@ public class ProviderService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private CategoryRepository categoryRepository;
+    private RatingRepository ratingRepository;
     @Autowired
     private ImageRepository imageRepository;
 
