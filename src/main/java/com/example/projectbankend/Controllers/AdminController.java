@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +27,9 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("providers/{status}")
-    public ResponseEntity<?> allProviders(@PathVariable @Status String status) {
+    public ResponseEntity<?> allProviders(@PathVariable @Status String status, @RequestParam(defaultValue = "0") @Min(0) Integer page) {
         Map<String, Object> responseBody =
-                Response.response(adminService.findAllProviderByStatus(status));
+                Response.response(adminService.findAllProviderByStatus(status, page));
         return ResponseEntity.ok(responseBody);
     }
 
@@ -39,13 +40,13 @@ public class AdminController {
     }
 
     @GetMapping("users/{status}")
-    public ResponseEntity<?> allUsers(@PathVariable @Ban String status) {
+    public ResponseEntity<?> allUsers(@PathVariable @Ban String status, @RequestParam(defaultValue = "0") @Min(0) Integer page) {
         List<UserDTO> data;
         if(status.equals("ban")) {
-            data = adminService.findAllUserByBanStatus(true);
+            data = adminService.findAllUserByBanStatus(true, page);
         }
         else {
-            data = adminService.findAllUserByBanStatus(false);
+            data = adminService.findAllUserByBanStatus(false, page);
         }
         return ResponseEntity.ok(Response.response(data));
     }
@@ -57,8 +58,8 @@ public class AdminController {
     }
 
     @GetMapping("/product_requests/{status}")
-    public ResponseEntity<?> allProductRequests(@PathVariable @Status  String status) {
-        List<ProductDTO> data = adminService.getAllProductsByStatus(status);
+    public ResponseEntity<?> allProductRequests(@PathVariable @Status  String status, @RequestParam(defaultValue = "0") @Min(0) Integer page) {
+        List<ProductDTO> data = adminService.getAllProductsByStatus(status, page);
         return ResponseEntity.ok(Response.response(data));
     }
 

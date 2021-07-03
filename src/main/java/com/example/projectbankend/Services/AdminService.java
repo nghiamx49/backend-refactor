@@ -15,6 +15,9 @@ import com.example.projectbankend.Repository.ProviderRepository;
 import com.example.projectbankend.Repository.UserRepository;
 import com.example.projectbankend.RequestModel.UpdateStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,8 +35,9 @@ public class AdminService {
     private ProductRepository productRepository;
 
 
-    public List<ProviderDTO> findAllProviderByStatus(String status) {
-        List<Provider> allProvider = providerRepository.findAllByStatus(status);
+    public List<ProviderDTO> findAllProviderByStatus(String status, Integer page) {
+        Pageable paging = PageRequest.of(page, 10);
+        Page<Provider> allProvider = providerRepository.findAllByStatus(status, paging);
         List<ProviderDTO> providers = new ArrayList<>();
         for(Provider provider: allProvider) {
             providers.add(ProviderMapper.toProviderDTO(provider));
@@ -52,9 +56,10 @@ public class AdminService {
         }
     };
 
-    public List<UserDTO> findAllUserByBanStatus(boolean banStatus) {
+    public List<UserDTO> findAllUserByBanStatus(boolean banStatus, Integer page) {
+        Pageable paging = PageRequest.of(page, 10);
         List<UserDTO> allUsers = new ArrayList<>();
-        List<User> users = userRepository.findAllByBan(banStatus);
+        Page<User> users = userRepository.findAllByBan(banStatus, paging);
         for(User user: users) {
             allUsers.add(UserMapper.toUserDTO(user));
         }
@@ -71,8 +76,9 @@ public class AdminService {
         }
     }
 
-    public List<ProductDTO> getAllProductsByStatus(String status) {
-        List<Product> products = productRepository.findAllByStatus(status);
+    public List<ProductDTO> getAllProductsByStatus(String status, Integer page) {
+        Pageable paging = PageRequest.of(page, 10);
+        Page<Product> products = productRepository.findAllByStatus(status, paging);
         List<ProductDTO> productDTOS = new ArrayList<>();
         for(Product product: products) {
             productDTOS.add(ProductMapper.toProductDTO(product));

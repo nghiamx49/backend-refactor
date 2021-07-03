@@ -22,6 +22,7 @@ public class Product {
     @Column(name = "id")
     private int id;
 
+    @NotNull(message = "tên sản phẩm không được để trống.")
     private String name;
 
     @NotNull(message = "Số lượng sản  không được để trống.")
@@ -33,6 +34,7 @@ public class Product {
     @NotNull(message = "Số lượng đã bán không được bỏ trống")
     private int number_of_sold;
 
+    @Column(length = 10000)
     private String product_description;
 
     @Status
