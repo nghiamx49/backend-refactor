@@ -5,13 +5,11 @@ import com.example.projectbankend.DTO.OrderItemDTO;
 import com.example.projectbankend.DTO.Response;
 import com.example.projectbankend.DTO.UserDTO;
 import com.example.projectbankend.Models.Validator.Action;
-import com.example.projectbankend.RequestModel.ChangePassword;
-import com.example.projectbankend.RequestModel.CreateRating;
-import com.example.projectbankend.RequestModel.OrderRequest;
-import com.example.projectbankend.RequestModel.UpdateUser;
+import com.example.projectbankend.RequestModel.*;
 import com.example.projectbankend.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user/")
-@Valid
+@Validated
 public class UserController {
 
     @Autowired
@@ -56,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping("cart/add")
-    public ResponseEntity addToCart(@Valid @RequestBody OrderRequest orderRequest)  throws Exception{
+    public ResponseEntity<?> addToCart(@Valid @RequestBody OrderRequest orderRequest)  throws Exception{
         userService.addToCart(orderRequest);
         return ResponseEntity.ok(Response.responseWithoutData());
     }
@@ -77,5 +75,11 @@ public class UserController {
     public ResponseEntity<?> orderDetail(@PathVariable int id) {
         OrderItemDTO data = userService.getOrderDetail(id);
         return ResponseEntity.ok(Response.response(data));
+    }
+
+    @PatchMapping("cart/checkout")
+    public ResponseEntity<?> checkout(@Valid @RequestBody Checkout checkout) {
+        userService.doPayment(checkout);
+        return ResponseEntity.ok(Response.responseWithoutData());
     }
 }

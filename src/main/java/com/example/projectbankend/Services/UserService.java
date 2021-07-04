@@ -4,15 +4,13 @@ import com.example.projectbankend.DTO.CartItemDTO;
 import com.example.projectbankend.DTO.OrderItemDTO;
 import com.example.projectbankend.DTO.UserDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
+import com.example.projectbankend.ExceptionHandler.SystemErrorException;
 import com.example.projectbankend.ExceptionHandler.WrongPasswordException;
 import com.example.projectbankend.Mapper.UserMapper;
 import com.example.projectbankend.Models.Account;
 import com.example.projectbankend.Models.Order;
 import com.example.projectbankend.Repository.*;
-import com.example.projectbankend.RequestModel.ChangePassword;
-import com.example.projectbankend.RequestModel.CreateRating;
-import com.example.projectbankend.RequestModel.OrderRequest;
-import com.example.projectbankend.RequestModel.UpdateUser;
+import com.example.projectbankend.RequestModel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -133,5 +131,12 @@ public class UserService {
         OrderItemDTO orderItemDTO = orderRepository.getById(id, getUserId());
         if(orderItemDTO == null) throw new NotFoundException("không tìm thấy chi tiết đơn hàng");
         return orderItemDTO;
+    }
+
+    public void doPayment(Checkout checkout) {
+        Order order = orderRepository.findByProductIdAndUserId(checkout.getProduct_id(), getUserId());
+        if(order == null) throw new SystemErrorException();
+        int method = checkout.getMethod() == "Paypal" ? 2 : 1;
+        orderRepository.doPayment(order.getId(), method, new Date());
     }
 }

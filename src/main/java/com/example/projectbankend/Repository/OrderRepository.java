@@ -9,6 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -54,4 +55,8 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Crite
     @Query(value = "SELECT new com.example.projectbankend.DTO.OrderItemDTO(order.id, order.product.name, order.product.provider.store_name, order.quantity_purchased, order.product.unit_price, order.payment.type, order.date_of_payment) FROM " +
             "Order order WHERE order.id = ?1 AND order.user.id = ?2 AND order.orderStatus.type = 'Success'")
     OrderItemDTO getById(int id, int userId);
+
+    @Query(value = "UPDATE orders SET payment_id = ?2, date_of_payment = ?3 WHERE id = ?1", nativeQuery = true)
+    @Modifying
+    void doPayment(int id, int payment_types, Date date);
 }

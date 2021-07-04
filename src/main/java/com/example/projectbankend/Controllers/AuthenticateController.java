@@ -12,6 +12,7 @@ import com.example.projectbankend.Utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/authenticate/")
+@Validated
 public class AuthenticateController {
 
     @Autowired
@@ -74,7 +76,7 @@ public class AuthenticateController {
     }
 
     @PostMapping("verify_mail")
-    public ResponseEntity<?> verifyMail(@RequestBody VerifyMail verifyMail) throws Exception {
+    public ResponseEntity<?> verifyMail(@Valid @RequestBody VerifyMail verifyMail) throws Exception {
         Map<String, Object> data = mailService.sendMail(verifyMail.getEmail());
         return ResponseEntity.ok(Response.response(data));
     }
