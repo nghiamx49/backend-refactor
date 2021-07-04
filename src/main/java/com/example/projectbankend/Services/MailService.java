@@ -40,6 +40,7 @@ public class MailService {
         Map<String, Object> response = new HashMap<>();
         response.put("otp", otp);
         response.put("email", account.getEmail());
+        response.put("username", account.getUsername());
         return response;
     }
 }

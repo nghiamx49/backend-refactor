@@ -23,6 +23,10 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
     User findById(int Id);
 
     @Modifying
+    @Query(value = "UPDATE  users SET full_name = ?2, zipcode = ?3 WHERE id = ?1",nativeQuery = true)
+    void updateUser(int id, String full_name, String zip_code);
+
+    @Modifying
     @Query(value = "UPDATE  users SET ban = true WHERE id = ?1", nativeQuery = true)
     void banUser(int id);
 }

@@ -10,8 +10,8 @@ import com.example.projectbankend.Repository.ProviderRepository;
 import com.example.projectbankend.Repository.UserRepository;
 import com.example.projectbankend.RequestModel.LoginRequest;
 import com.example.projectbankend.RequestModel.ProviderRegister;
+import com.example.projectbankend.RequestModel.ResetPassword;
 import com.example.projectbankend.RequestModel.UserRegister;
-import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -52,7 +52,7 @@ public class AuthenticateService implements UserDetailsService {
     public boolean checkLogin(LoginRequest loginRequest) {
         Account account = accountRepository.findByUsername(loginRequest.getUsername());
         if(account == null) throw new NotFoundException("không tìm thấy tài khoản");
-        return account != null && passwordEncoder.matches(loginRequest.getPassword(), account.getPassword());
+        return passwordEncoder.matches(loginRequest.getPassword(), account.getPassword());
     }
 
     public void registerAsUser(UserRegister userRegister) throws Exception {
@@ -96,6 +96,12 @@ public class AuthenticateService implements UserDetailsService {
         catch (Exception e) {
             throw new Exception(e);
         }
+    }
+
+    public void resetPassword(ResetPassword resetPassword) {
+        Account account = accountRepository.findByUsername(resetPassword.getUsername());
+        if(account == null) throw new NotFoundException("không tìm thấy tài khoản");
+        accountRepository.updatePassword(account.getId(), resetPassword.getNew_password());
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.projectbankend.Services;
+package com.example.projectbankend.RequestModel;
 
 import lombok.Data;
 

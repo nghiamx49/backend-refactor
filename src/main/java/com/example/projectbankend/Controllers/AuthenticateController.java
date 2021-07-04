@@ -3,18 +3,16 @@ package com.example.projectbankend.Controllers;
 import com.example.projectbankend.DTO.Response;
 import com.example.projectbankend.RequestModel.LoginRequest;
 import com.example.projectbankend.RequestModel.ProviderRegister;
+import com.example.projectbankend.RequestModel.ResetPassword;
 import com.example.projectbankend.RequestModel.UserRegister;
 import com.example.projectbankend.Services.AuthenticateService;
 import com.example.projectbankend.Services.MailService;
-import com.example.projectbankend.Services.VerifyMail;
+import com.example.projectbankend.RequestModel.VerifyMail;
 import com.example.projectbankend.Utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -79,5 +77,11 @@ public class AuthenticateController {
     public ResponseEntity<?> verifyMail(@RequestBody VerifyMail verifyMail) throws Exception {
         Map<String, Object> data = mailService.sendMail(verifyMail.getEmail());
         return ResponseEntity.ok(Response.response(data));
+    }
+
+    @PatchMapping("reset_password")
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPassword resetPassword) {
+        authenticateService.resetPassword(resetPassword);
+        return ResponseEntity.ok(Response.responseWithoutData());
     }
 }
