@@ -12,6 +12,7 @@ import com.example.projectbankend.Repository.*;
 import com.example.projectbankend.RequestModel.ChangePassword;
 import com.example.projectbankend.RequestModel.CreateRating;
 import com.example.projectbankend.RequestModel.OrderRequest;
+import com.example.projectbankend.RequestModel.UpdateUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,11 +48,11 @@ public class UserService {
         return UserMapper.toUserDTO(userRepository.findById(getUserId()));
     }
 
-    public void updateUserDetail(UserDTO userDTO) throws Exception {
-        Account account = accountRepository.findByUserId(userDTO.getId());
+    public void updateUserDetail(UpdateUser updateUser) throws Exception {
+        Account account = accountRepository.findByUserId(getUserId());
         try {
-            userRepository.updateUser(userDTO.getId(), userDTO.getFull_name(), userDTO.getZipcode());
-            accountRepository.updateAccount(account.getId(), userDTO.getAvatar_source(), userDTO.getAddress(), userDTO.getPhone_number());
+            userRepository.updateUser(getUserId(), updateUser.getFull_name(), updateUser.getZipcode());
+            accountRepository.updateAccount(account.getId(), updateUser.getAvatar_source(), updateUser.getAddress(), updateUser.getPhone_number());
         }
         catch (Exception e) {
             throw new Exception(e);
@@ -66,39 +67,66 @@ public class UserService {
     }
 
     public void ratingProduct(CreateRating createRating) {
-        if(productRepository.findById(createRating.getProductId()) == null) throw new NotFoundException("không tìm thấy sản phẩm");
-        ratingRepository.createRating(getUserId(), createRating.getProductId(), createRating.getComment(), createRating.getStar(), new Date());
+        if(productRepository.findById(createRating.getProduct_id()) == null) throw new NotFoundException("không tìm thấy sản phẩm");
+        ratingRepository.createRating(getUserId(), createRating.getProduct_id(), createRating.getComment(), createRating.getStar(), new Date());
     }
 
-    public List<CartItemDTO> productInCart(int userId) {
-        return orderRepository.cart(userId);
+    public List<CartItemDTO> productInCart() {
+        return orderRepository.cart(getUserId());
     }
 
 
-    public void increaseQuantityPurchased(int itemId) {
-        orderRepository.increaseItemQuantity(itemId);
+    private void increaseQuantityPurchased(int id) {
+        orderRepository.increaseItemQuantity(id);
     }
 
-    public void decreaseQuantityPurchased(int itemId) {
-        Order cartItem = orderRepository.findById(itemId);
+    private void decreaseQuantityPurchased(int id) {
+        Order cartItem = orderRepository.findById(id);
         if(cartItem.getQuantity_purchased() == 1) {
-            orderRepository.deleteItem(itemId);
+            orderRepository.deleteItem(id);
         }
         else {
-            orderRepository.decreaseItemQuantity(itemId);
+            orderRepository.decreaseItemQuantity(id);
         }
     }
 
-    public void addToCart(int userId, OrderRequest orderRequest) {
-        orderRepository.addToCart(orderRequest.getProduct_id(), userId, orderRequest.getQuantity_purchased());
+    public void addToCart(OrderRequest orderRequest) throws Exception{
+        try{
+            Order order = orderRepository.findByProductIdAndUserId(orderRequest.getProduct_id(), getUserId());
+            if(order != null) {
+                orderRepository.updateQuantity(order.getId(), orderRequest.getQuantity_purchased());
+            }
+            else {
+                orderRepository.addToCart(orderRequest.getProduct_id(), getUserId(), orderRequest.getQuantity_purchased());
+            }
+        }
+        catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
-    public void deleteItem(int id) {
+    private void deleteItem(int id) {
         orderRepository.deleteItem(id);
     }
 
-    public List<OrderItemDTO> getOrderHistory(int userId) {
-        return orderRepository.getOrderHistory(userId);
+    public void cartAction(int id, String action) {
+        switch (action) {
+            case "increase":
+                increaseQuantityPurchased(id);
+                break;
+            case "decrease":
+                decreaseQuantityPurchased(id);
+                break;
+            case "delete":
+                deleteItem(id);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public List<OrderItemDTO> getOrderHistory() {
+        return orderRepository.getOrderHistory(getUserId());
     }
 
     public OrderItemDTO getOrderDetail(int id) {

@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(WrongPasswordException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<?> wrongPasswordException(SystemErrorException ex) {
+    public ResponseEntity<?> wrongPasswordException(WrongPasswordException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", 400);
         response.put("message", ex.getMessage());

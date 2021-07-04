@@ -25,6 +25,9 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Crite
 
     Order findById(int id);
 
+    @Query(value = "SELECT * FROM orders WHERE product_id = ?1 AND user_id = ?2", nativeQuery = true)
+    Order findByProductIdAndUserId(int productId, int userId);
+
     @Query(value = "INSERT INTO orders(product_id,user_id,quantity_purchased, status_id)" +
             "VALUES (?1, ?2, ?3, 1)", nativeQuery = true)
     @Modifying
@@ -33,6 +36,10 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Crite
     @Query(value = "UPDATE orders SET quantity_purchased = quantity_purchased + 1 WHERE id = ?1", nativeQuery = true)
     @Modifying
     void increaseItemQuantity(int id);
+
+    @Query(value = "UPDATE orders SET quantity_purchased = quantity_purchased + ?2 WHERE id = ?1", nativeQuery = true)
+    @Modifying
+    void updateQuantity(int id, int quantity);
 
     @Query(value = "UPDATE orders SET quantity_purchased = quantity_purchased - 1 WHERE id = ?1", nativeQuery = true)
     @Modifying
