@@ -41,7 +41,7 @@ public class AdminService {
 
     public List<ProviderDTO> findAllProviderByStatus(String status, Integer page) {
         Pageable paging = PageRequest.of(page, 10);
-        Page<Provider> allProvider = providerRepository.findAllByStatus(status, paging);
+        Page<Provider> allProvider = providerRepository.findAllByStatus(status,paging);
         List<ProviderDTO> providers = new ArrayList<>();
         for(Provider provider: allProvider) {
             providers.add(ProviderMapper.toProviderDTO(provider));
@@ -80,9 +80,9 @@ public class AdminService {
         }
     }
 
-    public List<ProductDTO> getAllProductsByStatus(String status, Integer page) {
+    public List<ProductDTO> getAllProductsByStatus(String status, Integer page, String keyword) {
         Pageable paging = PageRequest.of(page, 10);
-        Page<Product> products = productRepository.findAllByStatus(status, paging);
+        Page<Product> products = productRepository.findAllByStatus(status,"%" + keyword + "%", paging);
         List<ProductDTO> productDTOS = new ArrayList<>();
         for(Product product: products) {
             productDTOS.add(ProductMapper.toProductDTO(product));

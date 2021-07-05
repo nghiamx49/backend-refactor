@@ -16,7 +16,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 
     Product findByNameAndProviderId(String name, int provider_id);
 
-    Page<Product> findAllByStatus(String status, Pageable pageable);
+    @Query(value = "SELECT  * FROM products WHERE status = ? AND (name LIKE  vn_unaccent(?2) OR product_description LIKE vn_unaccent(?2))", nativeQuery = true)
+    Page<Product> findAllByStatus(String status,String keyword, Pageable pageable);
 
     Page<Product> findByStatusAndProviderId(String status, int provider_id, Pageable pageable);
 

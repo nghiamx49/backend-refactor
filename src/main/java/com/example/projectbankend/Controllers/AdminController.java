@@ -27,7 +27,8 @@ public class AdminController {
     private AdminService adminService;
 
     @GetMapping("providers/{status}")
-    public ResponseEntity<?> allProviders(@PathVariable @Status String status, @RequestParam(defaultValue = "0") @Min(0) Integer page) {
+    public ResponseEntity<?> allProviders(@PathVariable @Status String status,
+                                          @RequestParam(defaultValue = "0") @Min(0) Integer page) {
         Map<String, Object> responseBody =
                 Response.response(adminService.findAllProviderByStatus(status, page));
         return ResponseEntity.ok(responseBody);
@@ -58,8 +59,10 @@ public class AdminController {
     }
 
     @GetMapping("/product_requests/{status}")
-    public ResponseEntity<?> allProductRequests(@PathVariable @Status  String status, @RequestParam(defaultValue = "0") @Min(0) Integer page) {
-        List<ProductDTO> data = adminService.getAllProductsByStatus(status, page);
+    public ResponseEntity<?> allProductRequests(@PathVariable @Status  String status,
+                                                @RequestParam(defaultValue = "0") @Min(0) Integer page,
+                                                @RequestParam(defaultValue = " ") String keyword) {
+        List<ProductDTO> data = adminService.getAllProductsByStatus(status, page, keyword);
         return ResponseEntity.ok(Response.response(data));
     }
 
