@@ -2,6 +2,7 @@ package com.example.projectbankend.Config;
 
 import com.example.projectbankend.ExceptionHandler.JwtExceptionHandler;
 import com.example.projectbankend.Filter.AuthorizationFilter;
+import com.example.projectbankend.Filter.WebSecurityCorsFilter;
 import com.example.projectbankend.Services.AuthenticateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -26,6 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticateService authenticateService;
     @Autowired
     private JwtExceptionHandler jwtExceptionHandler;
+    @Autowired
+    private WebSecurityCorsFilter webSecurityCorsFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -55,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/user/**").hasAuthority("user");
         http.authorizeRequests().antMatchers("/api/provider/**").hasAuthority("provider");
         http.authorizeRequests().antMatchers("/api/products/**").permitAll();
+        http.addFilterBefore(webSecurityCorsFilter, ChannelProcessingFilter.class);
         http.addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
