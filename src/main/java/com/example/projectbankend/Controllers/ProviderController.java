@@ -17,7 +17,7 @@ import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/provider")
+@RequestMapping("/api/provider/")
 @Validated
 public class ProviderController {
 

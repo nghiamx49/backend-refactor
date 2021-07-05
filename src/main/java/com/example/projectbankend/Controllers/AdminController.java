@@ -58,7 +58,7 @@ public class AdminController {
         return ResponseEntity.ok(Response.responseWithoutData());
     }
 
-    @GetMapping("/product_requests/{status}")
+    @GetMapping("product_requests/{status}")
     public ResponseEntity<?> allProductRequests(@PathVariable @Status  String status,
                                                 @RequestParam(defaultValue = "0") @Min(0) Integer page,
                                                 @RequestParam(defaultValue = " ") String keyword) {
@@ -66,7 +66,7 @@ public class AdminController {
         return ResponseEntity.ok(Response.response(data));
     }
 
-    @PatchMapping("/product_requests/update_status")
+    @PatchMapping("product_requests/update_status")
     public ResponseEntity<?> updateProductStatus(@Valid @RequestBody UpdateStatus updateStatus) throws Exception {
         adminService.updateProductStatus(updateStatus);
         return ResponseEntity.ok(Response.responseWithoutData());
