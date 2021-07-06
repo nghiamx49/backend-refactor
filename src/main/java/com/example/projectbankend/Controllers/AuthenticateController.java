@@ -39,12 +39,15 @@ public class AuthenticateController {
             response.put("token", jwtUtil.generateToken(loginRequest.getUsername()));
             response.put("account", authenticateService.accountDetail(loginRequest.getUsername()));
             response.put("isLoggedIn", true);
+            response.put("status", 200);
+            return  ResponseEntity.status(HttpStatus.OK).body(response);
         }
         else {
-            response.put("message", "đăng nhập thất bại");
+            response.put("message", "đăng nhập thất bại. Tài khoản hoặc mật khẩu không đúng");
             response.put("isLoggedIn", false);
+            response.put("status", 401);
+            return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
-        return  ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("register/user")
