@@ -22,12 +22,13 @@ public class ProductController {
     public ResponseEntity<?> getAllAvailableProducts(@RequestParam(defaultValue = "0") @Min(0) Integer page,
                                                      @RequestParam(defaultValue = " ") String keyword) {
         List<ProductDTO> data = productService.getAllAvailableProducts(page, keyword);
-        return ResponseEntity.ok(Response.response(data));
+        int totalPages = productService.totalProductPages();
+        return ResponseEntity.ok(Response.response(data, totalPages));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductDetail(@PathVariable int id) throws Exception {
         ProductDetailDTO data = productService.getProductDetail(id);
-        return ResponseEntity.ok(Response.response(data));
+        return ResponseEntity.ok(Response.response(data, 0));
     }
 }

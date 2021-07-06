@@ -20,6 +20,7 @@ public interface ProviderRepository extends PagingAndSortingRepository<Provider,
 
     Provider findById(int id);
 
+    int countProviderByStatus(String status);
 
     Page<Provider> findAllByStatus(String status, Pageable pageable);
 

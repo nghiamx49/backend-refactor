@@ -81,7 +81,7 @@ public class AuthenticateController {
     @PostMapping("verify_mail")
     public ResponseEntity<?> verifyMail(@Valid @RequestBody VerifyMail verifyMail) throws Exception {
         Map<String, Object> data = mailService.sendMail(verifyMail.getEmail());
-        return ResponseEntity.ok(Response.response(data));
+        return ResponseEntity.ok(Response.response(data, 0));
     }
 
     @PatchMapping("reset_password")

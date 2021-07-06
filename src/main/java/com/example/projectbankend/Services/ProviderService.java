@@ -1,7 +1,6 @@
 package com.example.projectbankend.Services;
 
 import com.example.projectbankend.DTO.ProductDTO;
-import com.example.projectbankend.DTO.RateDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
 import com.example.projectbankend.Mapper.ProductMapper;
 import com.example.projectbankend.Models.*;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -28,14 +26,25 @@ public class ProviderService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private RatingRepository ratingRepository;
-    @Autowired
     private ImageRepository imageRepository;
 
     public int getProviderId() {
         UserDetails providerPrincipal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Account providerAccount = accountRepository.findByUsername(providerPrincipal.getUsername());
         return providerAccount.getProvider().getId();
+    }
+
+    public int totalProductPagesByStatus(String status) {
+        int count = productRepository.countAllByStatusAndProviderId(status, getProviderId());
+        if(count <= 5) {
+            return 1;
+        }
+        else if (count % 5 != 0) {
+            return (int) Math.floor(count / 5) + 1;
+        }
+        else  {
+            return (int) Math.floor(count / 5);
+        }
     }
 
     public List<ProductDTO> getAllOwnProductsByStatus(String status, Integer page) {

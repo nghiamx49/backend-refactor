@@ -28,8 +28,9 @@ public class ProviderController {
     public ResponseEntity<?> getAllProducts(@PathVariable @Status String status, @RequestParam(defaultValue = "0") @Min(0) Integer page) {
 
         List<ProductDTO> data = providerService.getAllOwnProductsByStatus(status, page);
+        int totalPage = providerService.totalProductPagesByStatus(status);
 
-        return ResponseEntity.ok(Response.response(data));
+        return ResponseEntity.ok(Response.response(data, totalPage));
     }
 
     @PostMapping("create_product")

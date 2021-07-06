@@ -2,6 +2,8 @@ package com.example.projectbankend.DTO;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class ProviderDTO {
     private int id;
@@ -14,4 +16,5 @@ public class ProviderDTO {
     private String owner ;
     private String bank ;
     private String bank_account_number;
+    private Date create_at;
 }
