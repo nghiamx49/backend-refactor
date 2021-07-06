@@ -35,13 +35,11 @@ public class Account {
     @NotNull(message = "Địa chỉ không được để trống.")
     private String address;
 
-    @Column(unique = true)
     @NotNull(message = "Số điện thoại không được để trống.")
     private String phone_number;
 
     @NotNull(message = "Email không được để trống.")
     @Email(message = "Vui lòng nhập email đúng định dạng")
-    @Column(unique = true)
     private String email;
 
     private Date create_at;

@@ -10,6 +10,7 @@ import com.example.projectbankend.Services.MailService;
 import com.example.projectbankend.RequestModel.VerifyMail;
 import com.example.projectbankend.Utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -51,7 +52,7 @@ public class AuthenticateController {
     }
 
     @PostMapping("register/user")
-    public ResponseEntity<?> registerAsNormalUser(@Valid @RequestBody UserRegister userRegister) throws Exception {
+    public ResponseEntity<?> registerAsNormalUser(@Valid @RequestBody UserRegister userRegister) throws DataIntegrityViolationException {
         try {
             authenticateService.registerAsUser(userRegister);
             Map<String, Object> response = new HashMap<>();
@@ -60,12 +61,12 @@ public class AuthenticateController {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }
         catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw new DataIntegrityViolationException(e.getMessage());
         }
     }
 
     @PostMapping("register/provider")
-    public ResponseEntity<?> registerAsNormalUser(@Valid @RequestBody ProviderRegister providerRegister) throws Exception {
+    public ResponseEntity<?> registerAsNormalUser(@Valid @RequestBody ProviderRegister providerRegister) throws DataIntegrityViolationException {
         try {
             authenticateService.registerAsProvider(providerRegister);
             Map<String, Object> response = new HashMap<>();
@@ -74,12 +75,12 @@ public class AuthenticateController {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }
         catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw new DataIntegrityViolationException("tài khoản đã tồn tại");
         }
     }
 
     @PostMapping("verify_mail")
-    public ResponseEntity<?> verifyMail(@Valid @RequestBody VerifyMail verifyMail) throws Exception {
+    public ResponseEntity<?> verifyMail(@Valid @RequestBody VerifyMail verifyMail) {
         Map<String, Object> data = mailService.sendMail(verifyMail.getEmail());
         return ResponseEntity.ok(Response.response(data, 0));
     }
