@@ -17,7 +17,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> notFoundException(NotFoundException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", 404);
-        response.put("status", ex.getMessage());
+        response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
@@ -37,5 +37,14 @@ public class GlobalExceptionHandler {
         response.put("status", 400);
         response.put("message", ex.getMessage());
         return ResponseEntity.status(400).body(response);
+    }
+
+    @ExceptionHandler(NotAllowedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<?> notAllowedException(NotAllowedException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 403);
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(403).body(response);
     }
 }
