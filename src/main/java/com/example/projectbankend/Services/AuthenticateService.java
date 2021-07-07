@@ -53,12 +53,12 @@ public class AuthenticateService implements UserDetailsService {
     public boolean checkLogin(LoginRequest loginRequest) {
         Account account = accountRepository.findByUsername(loginRequest.getUsername());
         if(account == null) throw new NotFoundException("không tìm thấy tài khoản");
-        if(account.getRole().getName() == "user"){
-            if(account.getUser().getBan() == true) throw new NotAllowedException("tài khoản của bạn đã bị khóa");
+        if(account.getRole().getName().equals("user")){
+            if(account.getUser().getBan()) throw new NotAllowedException("tài khoản của bạn đã bị khóa");
         }
-        if(account.getRole().getName() == "provider") {
-            if(account.getProvider().getStatus() == "Pending") throw new NotAllowedException("tài khoản của bạn đang chờ phê duyệt");
-            if(account.getProvider().getStatus() == "Rejected") throw new NotAllowedException("tài khoản của bạn đã bị từ chối");
+        if(account.getRole().getName().equals("provider")) {
+            if(account.getProvider().getStatus().equals("Pending")) throw new NotAllowedException("tài khoản của bạn đang chờ phê duyệt");
+            if(account.getProvider().getStatus().equals("Rejected")) throw new NotAllowedException("tài khoản của bạn đã bị từ chối");
         }
         return passwordEncoder.matches(loginRequest.getPassword(), account.getPassword());
     }
