@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(Response.responseWithoutData());
     }
 
-    @PatchMapping("change_password")
+    @PutMapping("change_password")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePassword changePassword) {
         userService.changePassword(changePassword);
         return ResponseEntity.ok(Response.responseWithoutData());
@@ -59,7 +59,7 @@ public class UserController {
         return ResponseEntity.ok(Response.responseWithoutData());
     }
 
-    @PatchMapping("cart/{id}/{action}")
+    @PutMapping("cart/{id}/{action}")
     public ResponseEntity<?> cartAction(@PathVariable int id, @PathVariable @Action String action) {
         userService.cartAction(id, action);
         return ResponseEntity.ok(Response.responseWithoutData());
@@ -77,7 +77,7 @@ public class UserController {
         return ResponseEntity.ok(Response.response(data, 0));
     }
 
-    @PatchMapping("cart/checkout")
+    @PutMapping("cart/checkout")
     public ResponseEntity<?> checkout(@Valid @RequestBody Checkout checkout) {
         userService.doPayment(checkout);
         return ResponseEntity.ok(Response.responseWithoutData());
