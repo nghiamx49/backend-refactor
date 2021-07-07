@@ -87,7 +87,7 @@ public class AdminService {
     }
 
     public void updateProviderStatus(UpdateStatus updateStatus) throws Exception{
-        if(productRepository.findById(updateStatus.getId()) == null)
+        if(providerRepository.findById(updateStatus.getId()) == null)
         throw new NotFoundException("không tìm thấy tài khoản nhà cung cấp");
         try {
             providerRepository.updateRegisterStatus(updateStatus.getId(), updateStatus.getStatus());
