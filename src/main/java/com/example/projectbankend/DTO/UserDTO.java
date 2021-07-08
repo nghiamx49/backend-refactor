@@ -12,6 +12,7 @@ public class UserDTO {
     private String username;
     private String avatar_source;
     private String address ;
+    private String email ;
     private String phone_number ;
     private Date create_at ;
     private String role ;

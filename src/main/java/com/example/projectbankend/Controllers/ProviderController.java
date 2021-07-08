@@ -33,13 +33,13 @@ public class ProviderController {
         return ResponseEntity.ok(Response.response(data, totalPage));
     }
 
-    @PostMapping("create_product")
+    @PutMapping("create_product")
     public ResponseEntity<?> createProduct(@Valid @RequestBody CreateProduct createProduct) throws Exception{
         providerService.createProduct(createProduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(Response.responseWithoutData());
     }
 
-    @PatchMapping("update_product")
+    @PutMapping("update_product")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody UpdateProduct updateProduct) throws Exception {
         providerService.updateProduct(updateProduct);
         return ResponseEntity.status(200).body(Response.responseWithoutData());

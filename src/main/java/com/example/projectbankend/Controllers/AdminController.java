@@ -33,7 +33,7 @@ public class AdminController {
         return ResponseEntity.ok(responseBody);
     }
 
-    @PatchMapping("providers/update_status")
+    @PutMapping("providers/update_status")
     public ResponseEntity<?> updateRegisterStatus(@Valid @RequestBody UpdateStatus updateStatus) throws Exception {
         adminService.updateProviderStatus(updateStatus);
         return ResponseEntity.ok(Response.responseWithoutData());
@@ -54,7 +54,7 @@ public class AdminController {
         return ResponseEntity.ok(Response.response(data, totalPages));
     }
 
-    @PatchMapping("users/{id}/ban")
+    @PutMapping("users/{id}/ban")
     public ResponseEntity<?> banUser(@PathVariable int id) throws Exception {
         adminService.banUser(id);
         return ResponseEntity.ok(Response.responseWithoutData());
@@ -69,7 +69,7 @@ public class AdminController {
         return ResponseEntity.ok(Response.response(data, totalPage));
     }
 
-    @PatchMapping("product_requests/update_status")
+    @PutMapping("product_requests/update_status")
     public ResponseEntity<?> updateProductStatus(@Valid @RequestBody UpdateStatus updateStatus) throws Exception {
         adminService.updateProductStatus(updateStatus);
         return ResponseEntity.ok(Response.responseWithoutData());

@@ -85,7 +85,7 @@ public class AuthenticateController {
         return ResponseEntity.ok(Response.response(data, 0));
     }
 
-    @PatchMapping("reset_password")
+    @PutMapping("reset_password")
     public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPassword resetPassword) {
         authenticateService.resetPassword(resetPassword);
         return ResponseEntity.ok(Response.responseWithoutData());
