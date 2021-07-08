@@ -16,6 +16,13 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
 
     Product findByNameAndProviderId(String name, int provider_id);
 
+    int countAllByStatusAndProviderId(String status, int provider_id);
+
+    int countAllByStatus(String status);
+
+    @Query(value = "SELECT COUNT(*) FROM products WHERE status = ?1 AND (LOWER(unaccent(name)) LIKE  unaccent(?2) OR LOWER(unaccent(product_description)) LIKE unaccent(?2))", nativeQuery = true)
+    int countAllByStatus(String status, String keyword);
+
     @Query(value = "SELECT  * FROM products WHERE status = ?1 AND (LOWER(unaccent(name)) LIKE  unaccent(?2) OR LOWER(unaccent(product_description)) LIKE unaccent(?2))", nativeQuery = true)
     Page<Product> findAllByStatus(String status,String keyword, Pageable pageable);
 

@@ -22,6 +22,8 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
 
     User findById(int Id);
 
+    int countAllByBan(boolean status);
+
     @Modifying
     @Query(value = "UPDATE  users SET full_name = ?2, zipcode = ?3 WHERE id = ?1",nativeQuery = true)
     void updateUser(int id, String full_name, String zip_code);

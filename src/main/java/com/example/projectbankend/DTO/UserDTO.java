@@ -18,5 +18,5 @@ public class UserDTO {
     @NotBlank
     private String full_name ;
     private Boolean ban ;
-    private String  zipcode ;
+    private String zipcode ;
 }

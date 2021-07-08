@@ -16,6 +16,7 @@ public class ProviderMapper {
         providerDTO.setOwner(provider.getOwner());
         providerDTO.setBank_account_number(provider.getBank_account_number());
         providerDTO.setStore_name(provider.getStore_name());
+        providerDTO.setCreate_at(provider.getAccount().getCreate_at());
         return providerDTO;
     }
 }

@@ -56,7 +56,7 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Crite
             "Order order WHERE order.id = ?1 AND order.user.id = ?2 AND order.orderStatus.type = 'Success'")
     OrderItemDTO getById(int id, int userId);
 
-    @Query(value = "UPDATE orders SET payment_id = ?2, date_of_payment = ?3 WHERE id = ?1", nativeQuery = true)
+    @Query(value = "UPDATE orders SET payment_id = ?2, date_of_payment = ?3, status_id = 2 WHERE id = ?1", nativeQuery = true)
     @Modifying
     void doPayment(int id, int payment_types, Date date);
 }

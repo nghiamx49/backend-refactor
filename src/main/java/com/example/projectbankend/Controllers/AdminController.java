@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Map;
 
@@ -30,11 +29,11 @@ public class AdminController {
     public ResponseEntity<?> allProviders(@PathVariable @Status String status,
                                           @RequestParam(defaultValue = "0") @Min(0) Integer page) {
         Map<String, Object> responseBody =
-                Response.response(adminService.findAllProviderByStatus(status, page));
+                Response.response(adminService.findAllProviderByStatus(status, page), adminService.totalProvidersPage(status));
         return ResponseEntity.ok(responseBody);
     }
 
-    @PatchMapping("providers/update_status")
+    @PutMapping("providers/update_status")
     public ResponseEntity<?> updateRegisterStatus(@Valid @RequestBody UpdateStatus updateStatus) throws Exception {
         adminService.updateProviderStatus(updateStatus);
         return ResponseEntity.ok(Response.responseWithoutData());
@@ -43,16 +42,19 @@ public class AdminController {
     @GetMapping("users/{status}")
     public ResponseEntity<?> allUsers(@PathVariable @Ban String status, @RequestParam(defaultValue = "0") @Min(0) Integer page) {
         List<UserDTO> data;
+        int totalPages;
         if(status.equals("ban")) {
             data = adminService.findAllUserByBanStatus(true, page);
+            totalPages = adminService.totalUserPagesByStatus(true);
         }
         else {
             data = adminService.findAllUserByBanStatus(false, page);
+            totalPages = adminService.totalUserPagesByStatus(false);
         }
-        return ResponseEntity.ok(Response.response(data));
+        return ResponseEntity.ok(Response.response(data, totalPages));
     }
 
-    @PatchMapping("users/{id}/ban")
+    @PutMapping("users/{id}/ban")
     public ResponseEntity<?> banUser(@PathVariable int id) throws Exception {
         adminService.banUser(id);
         return ResponseEntity.ok(Response.responseWithoutData());
@@ -63,10 +65,11 @@ public class AdminController {
                                                 @RequestParam(defaultValue = "0") @Min(0) Integer page,
                                                 @RequestParam(defaultValue = " ") String keyword) {
         List<ProductDTO> data = adminService.getAllProductsByStatus(status, page, keyword);
-        return ResponseEntity.ok(Response.response(data));
+        int totalPage = adminService.totalProductPagesByStatus(status, keyword);
+        return ResponseEntity.ok(Response.response(data, totalPage));
     }
 
-    @PatchMapping("product_requests/update_status")
+    @PutMapping("product_requests/update_status")
     public ResponseEntity<?> updateProductStatus(@Valid @RequestBody UpdateStatus updateStatus) throws Exception {
         adminService.updateProductStatus(updateStatus);
         return ResponseEntity.ok(Response.responseWithoutData());
