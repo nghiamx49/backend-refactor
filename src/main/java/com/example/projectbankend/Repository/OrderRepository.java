@@ -21,8 +21,7 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Integ
 //            "WHERE order.user.id = ?1 AND order.orderStatus.type = 'InCart'")
     List<Order> findAllByUserIdAndOrderStatusType(int user_id, String orderStatus_type);
 
-    @Query(value = "SELECT * FROM orders WHERE  user_id = ?1 AND product_id = ?2", nativeQuery = true)
-    Order findDuplicate(int userId, int productId);
+    Order findByIdAndUserIdAndOrderStatusType(int id, int user_id, String orderStatus_type);
 
     Order findById(int id);
 
@@ -49,12 +48,6 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Integ
     @Modifying
     void deleteItem(int id);
 
-    @Query(value = "SELECT new com.example.projectbankend.DTO.OrderItemDTO(order.id, order.product.name, order.product.provider.store_name, order.quantity_purchased, order.product.unit_price, order.payment.type, order.date_of_payment) FROM " +
-            "Order order WHERE order.user.id = ?1 AND order.orderStatus.type = 'Success'")
-    List<OrderItemDTO> getOrderHistory(int userId);
-    @Query(value = "SELECT new com.example.projectbankend.DTO.OrderItemDTO(order.id, order.product.name, order.product.provider.store_name, order.quantity_purchased, order.product.unit_price, order.payment.type, order.date_of_payment) FROM " +
-            "Order order WHERE order.id = ?1 AND order.user.id = ?2 AND order.orderStatus.type = 'Success'")
-    OrderItemDTO getById(int id, int userId);
 
     @Query(value = "UPDATE orders SET payment_id = ?2, date_of_payment = ?3, status_id = 2 WHERE id = ?1", nativeQuery = true)
     @Modifying

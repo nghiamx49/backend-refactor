@@ -11,6 +11,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class OrderItemDTO {
     private int id;
+    private int product_id;
+    private String image_source;
+    private String user_full_name;
+    private String phone_number;
+    private String address;
     private String product_name;
     private String store_name;
     private int quantity_purchased;

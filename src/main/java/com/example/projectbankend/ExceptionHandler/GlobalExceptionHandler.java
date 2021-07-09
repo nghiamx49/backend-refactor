@@ -1,5 +1,6 @@
 package com.example.projectbankend.ExceptionHandler;
 
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,6 +43,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotAllowedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<?> notAllowedException(NotAllowedException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 403);
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(403).body(response);
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<?> malformedJwtException(MalformedJwtException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", 403);
         response.put("message", ex.getMessage());

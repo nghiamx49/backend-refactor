@@ -35,7 +35,7 @@ public class ProviderController {
 
     @PutMapping("create_product")
     public ResponseEntity<?> createProduct(@Valid @RequestBody CreateProduct createProduct) throws Exception{
-        providerService.createProduct(createProduct);
+            providerService.createProduct(createProduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(Response.responseWithoutData());
     }
 
