@@ -8,6 +8,8 @@ import java.util.ArrayList;
 public class ProductDetailDTO {
     private int id;
     private String name;
+    private String product_description;
+    private String category_name;
     private int product_quantity;
     private String unit_price;
     private int number_of_sold;

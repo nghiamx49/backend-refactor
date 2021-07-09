@@ -1,6 +1,8 @@
 package com.example.projectbankend.Services;
 
 import com.example.projectbankend.DTO.ProductDTO;
+import com.example.projectbankend.DTO.ProductDetailDTO;
+import com.example.projectbankend.DTO.RateDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
 import com.example.projectbankend.ExceptionHandler.SystemErrorException;
 import com.example.projectbankend.Mapper.ProductMapper;
@@ -28,6 +30,8 @@ public class ProviderService {
     private ProductRepository productRepository;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private RatingRepository ratingRepository;
 
     public int getProviderId() {
         UserDetails providerPrincipal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -51,11 +55,18 @@ public class ProviderService {
     public List<ProductDTO> getAllOwnProductsByStatus(String status, Integer page) {
         Pageable paging = PageRequest.of(page, 10);
         List<ProductDTO> productDTOS = new ArrayList<>();
-        Page<Product> products = productRepository.findByStatusAndProviderId(status, getProviderId(), paging);
+        Page<Product> products = productRepository.findAllByStatusAndProviderId(status, getProviderId(), paging);
         for(Product product: products) {
             productDTOS.add(ProductMapper.toProductDTO(product));
         }
         return productDTOS;
+    }
+
+    public ProductDetailDTO getProductDetail(int id) {
+        Product product = productRepository.findByIdAndProviderId(id, getProviderId());
+        if(product == null) throw new NotFoundException("không tìm thấy thông tin sản phẩm");
+        List<RateDTO> rates= ratingRepository.findAllByProductId(id);
+        return ProductMapper.toProductDetailDTO(product,rates);
     }
 
     public void createProduct(CreateProduct createProduct) throws SystemErrorException {
