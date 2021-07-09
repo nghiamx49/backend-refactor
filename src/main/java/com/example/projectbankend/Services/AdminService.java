@@ -64,7 +64,7 @@ public class AdminService {
     }
 
     public int totalProductPagesByStatus(String status, String keyword) {
-        int count = productRepository.countAllByStatus(status, keyword);
+        int count = productRepository.countAllByStatus(status);
         if(count <= 5) {
             return 1;
         }

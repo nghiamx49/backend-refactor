@@ -6,6 +6,7 @@ import com.example.projectbankend.DTO.UserDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
 import com.example.projectbankend.ExceptionHandler.SystemErrorException;
 import com.example.projectbankend.ExceptionHandler.WrongPasswordException;
+import com.example.projectbankend.Mapper.OrderMapper;
 import com.example.projectbankend.Mapper.UserMapper;
 import com.example.projectbankend.Models.Account;
 import com.example.projectbankend.Models.Order;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,7 +72,12 @@ public class UserService {
     }
 
     public List<CartItemDTO> productInCart() {
-        return orderRepository.cart(getUserId());
+        List<CartItemDTO> data = new ArrayList<>();
+        List<Order> items = orderRepository.findAllByUserIdAndOrderStatusType(getUserId(), "InCart");
+        for(Order order: items) {
+            data.add(OrderMapper.toCartDTO(order));
+        }
+        return data;
     }
 
 

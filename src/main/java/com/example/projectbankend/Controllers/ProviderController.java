@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/provider/")
 @Validated
-public class ProviderController {
+public class    ProviderController {
 
     @Autowired
     private ProviderService providerService;
@@ -33,7 +33,8 @@ public class ProviderController {
         return ResponseEntity.ok(Response.response(data, totalPage));
     }
 
-    @PutMapping("create_product")
+
+    @PostMapping("create_product")
     public ResponseEntity<?> createProduct(@Valid @RequestBody CreateProduct createProduct) throws Exception{
         providerService.createProduct(createProduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(Response.responseWithoutData());
