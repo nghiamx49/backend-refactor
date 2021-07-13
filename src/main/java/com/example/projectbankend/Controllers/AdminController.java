@@ -54,9 +54,9 @@ public class AdminController {
         return ResponseEntity.ok(Response.response(data, totalPages));
     }
 
-    @PutMapping("users/{id}/ban")
-    public ResponseEntity<?> banUser(@PathVariable int id) throws Exception {
-        adminService.banUser(id);
+    @PutMapping("users/{id}/{status}")
+    public ResponseEntity<?> banUser(@PathVariable int id , @PathVariable @Ban String status) throws Exception {
+        adminService.banUser(id , status);
         return ResponseEntity.ok(Response.responseWithoutData());
     }
 

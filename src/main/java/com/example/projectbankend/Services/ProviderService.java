@@ -2,6 +2,7 @@ package com.example.projectbankend.Services;
 
 import com.example.projectbankend.DTO.ProductDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
+import com.example.projectbankend.ExceptionHandler.SystemErrorException;
 import com.example.projectbankend.Mapper.ProductMapper;
 import com.example.projectbankend.Models.*;
 import com.example.projectbankend.Repository.*;
@@ -57,7 +58,7 @@ public class ProviderService {
         return productDTOS;
     }
 
-    public void createProduct(CreateProduct createProduct) throws Exception {
+    public void createProduct(CreateProduct createProduct) throws SystemErrorException {
         try {
             productRepository
                     .createNewProduct(createProduct.getName(),
@@ -73,7 +74,7 @@ public class ProviderService {
             }
         }
         catch (Exception e) {
-            throw new Exception(e);
+            throw new SystemErrorException();
         }
     }
 
