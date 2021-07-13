@@ -11,6 +11,7 @@ public class RateMapper {
         rateDTO.setUser_full_name(rate.getUser().getFull_name());
         rateDTO.setCreate_at(rate.getCreate_at());
         rateDTO.setComment(rate.getComment());
+        rateDTO.setAvatar_source(rate.getUser().getAccount().getAvatar_source());
         return  rateDTO;
     }
 }

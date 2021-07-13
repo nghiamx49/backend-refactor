@@ -14,5 +14,6 @@ public class RateDTO {
     private String user_full_name;
     private String comment;
     private Date create_at;
+    private String avatar_source;
     private int star;
 }
