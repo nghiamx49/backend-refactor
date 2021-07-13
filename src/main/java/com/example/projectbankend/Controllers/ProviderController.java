@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/provider/")
 @Validated
-public class ProviderController {
+public class    ProviderController {
 
     @Autowired
     private ProviderService providerService;
@@ -35,6 +35,7 @@ public class ProviderController {
 
         return ResponseEntity.ok(Response.response(data, totalPage));
     }
+
 
     @GetMapping("product_detail/{id}")
     public ResponseEntity<?> getOwnProductDetail(@PathVariable int id) throws NotFoundException {
