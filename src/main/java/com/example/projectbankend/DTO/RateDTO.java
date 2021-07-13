@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class RateDTO {
     private int id;
-    private String username;
+    private String user_full_name;
     private String comment;
     private Date create_at;
     private int star;

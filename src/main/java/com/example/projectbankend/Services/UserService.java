@@ -147,8 +147,9 @@ public class UserService {
 
     public void doPayment(Checkout checkout) {
         Order order = orderRepository.findByProductIdAndUserId(checkout.getProduct_id(), getUserId());
-        if(order == null) throw new SystemErrorException();
+        if(order == null) throw new NotFoundException("Không tìm thấy đơn hàng");
         int method = checkout.getMethod().equals("Paypal") ? 2 : 1;
-        orderRepository.doPayment(order.getId(), method, new Date());
+        orderRepository.doPayment(order.getId(), method, new Date(), checkout.getTotal());
+        productRepository.updateSoldOut(order.getProduct().getId(), order.getQuantity_purchased());
     }
 }

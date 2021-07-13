@@ -6,6 +6,7 @@ import com.example.projectbankend.DTO.RateDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
 import com.example.projectbankend.ExceptionHandler.SystemErrorException;
 import com.example.projectbankend.Mapper.ProductMapper;
+import com.example.projectbankend.Mapper.RateMapper;
 import com.example.projectbankend.Models.*;
 import com.example.projectbankend.Repository.*;
 import com.example.projectbankend.RequestModel.CreateProduct;
@@ -65,8 +66,12 @@ public class ProviderService {
     public ProductDetailDTO getProductDetail(int id) {
         Product product = productRepository.findByIdAndProviderId(id, getProviderId());
         if(product == null) throw new NotFoundException("không tìm thấy thông tin sản phẩm");
-        List<RateDTO> rates= ratingRepository.findAllByProductId(id);
-        return ProductMapper.toProductDetailDTO(product,rates);
+        List<Rate> rates= ratingRepository.findAllByProductId(id);
+        List<RateDTO> rateDTOS = new ArrayList<>();
+        for(Rate rate: rates) {
+            rateDTOS.add(RateMapper.ratingDTO(rate));
+        }
+        return ProductMapper.toProductDetailDTO(product,rateDTOS);
     }
 
     public void createProduct(CreateProduct createProduct) throws SystemErrorException {

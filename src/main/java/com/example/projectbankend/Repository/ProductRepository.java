@@ -43,4 +43,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
     @Modifying
     void updateProduct(String product_description, int quantity, int product_id);
 
+    @Query(value = "UPDATE products SET number_of_sold = number_of_sold + ?2 WHERE id = ?1", nativeQuery = true)
+    @Modifying
+    void updateSoldOut(int product_id, int quantity_purchased);
 }
