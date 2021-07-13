@@ -7,6 +7,7 @@ public class UserMapper {
     public static UserDTO toUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
 
+        userDTO.setEmail(user.getAccount().getEmail());
         userDTO.setId(user.getId());
         userDTO.setUsername(user.getAccount().getUsername());
         userDTO.setAvatar_source(user.getAccount().getAvatar_source());

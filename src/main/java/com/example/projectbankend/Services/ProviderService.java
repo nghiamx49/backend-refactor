@@ -63,6 +63,7 @@ public class ProviderService {
         return productDTOS;
     }
 
+
     public ProductDetailDTO getProductDetail(int id) {
         Product product = productRepository.findByIdAndProviderId(id, getProviderId());
         if(product == null) throw new NotFoundException("không tìm thấy thông tin sản phẩm");
