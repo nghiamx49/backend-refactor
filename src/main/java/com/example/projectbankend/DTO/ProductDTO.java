@@ -13,5 +13,6 @@ public class ProductDTO {
     private int number_of_sold;
     private String image_source;
     private String provider_name;
+    private String category_name;
 }
 

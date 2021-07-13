@@ -35,7 +35,7 @@ public class Product {
     @NotNull(message = "Số lượng đã bán không được bỏ trống")
     private int number_of_sold;
 
-    @Column(length = 10000)
+    @Column(length = 1000000)
     private String product_description;
 
     @Status

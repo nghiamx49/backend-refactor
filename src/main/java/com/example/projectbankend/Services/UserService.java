@@ -131,19 +131,24 @@ public class UserService {
     }
 
     public List<OrderItemDTO> getOrderHistory() {
-        return orderRepository.getOrderHistory(getUserId());
+        List<OrderItemDTO> result = new ArrayList<>();
+        List<Order> orders = orderRepository.findAllByUserIdAndOrderStatusType(getUserId(), "Success");
+        for(Order order: orders) {
+            result.add(OrderMapper.toOrderItemDTO(order));
+        }
+        return result;
     }
 
     public OrderItemDTO getOrderDetail(int id) {
-        OrderItemDTO orderItemDTO = orderRepository.getById(id, getUserId());
-        if(orderItemDTO == null) throw new NotFoundException("không tìm thấy chi tiết đơn hàng");
-        return orderItemDTO;
+        Order order = orderRepository.findByIdAndUserIdAndOrderStatusType(id, getUserId(), "Success");
+        if(order == null) throw new NotFoundException("không tìm thấy chi tiết đơn hàng");
+        return OrderMapper.toOrderItemDTO(order);
     }
 
     public void doPayment(Checkout checkout) {
         Order order = orderRepository.findByProductIdAndUserId(checkout.getProduct_id(), getUserId());
         if(order == null) throw new SystemErrorException();
-        int method = checkout.getMethod() == "Paypal" ? 2 : 1;
+        int method = checkout.getMethod().equals("Paypal") ? 2 : 1;
         orderRepository.doPayment(order.getId(), method, new Date());
     }
 }
