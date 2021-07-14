@@ -1,5 +1,6 @@
 package com.example.projectbankend.Services;
 
+import com.example.projectbankend.DTO.CategoryDTO;
 import com.example.projectbankend.DTO.ProductDTO;
 import com.example.projectbankend.DTO.ProductDetailDTO;
 import com.example.projectbankend.DTO.RateDTO;
@@ -33,6 +34,8 @@ public class ProviderService {
     private ImageRepository imageRepository;
     @Autowired
     private RatingRepository ratingRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public int getProviderId() {
         UserDetails providerPrincipal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -103,5 +106,8 @@ public class ProviderService {
         catch (Exception e) {
             throw new Exception(e);
         }
+    }
+    public List<CategoryDTO> getAllCategories() {
+        return categoryRepository.findAllCategories();
     }
 }

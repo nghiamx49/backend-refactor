@@ -43,6 +43,11 @@ public class    ProviderController {
         return ResponseEntity.ok(Response.response(data, 0));
     }
 
+    @GetMapping("all_categories")
+    public ResponseEntity<?> getAllCategories () {
+        return ResponseEntity.ok(Response.response(providerService.getAllCategories(), 0));
+    }
+
     @PostMapping("create_product")
     public ResponseEntity<?> createProduct(@Valid @RequestBody CreateProduct createProduct) throws Exception{
             providerService.createProduct(createProduct);
