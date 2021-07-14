@@ -26,7 +26,9 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
     @Query(value = "SELECT  * FROM products WHERE status = ?1 AND (LOWER(unaccent(name)) LIKE  unaccent(?2) OR LOWER(unaccent(product_description)) LIKE unaccent(?2))", nativeQuery = true)
     Page<Product> findAllByStatus(String status,String keyword, Pageable pageable);
 
-    Page<Product> findByStatusAndProviderId(String status, int provider_id, Pageable pageable);
+    Product findByIdAndProviderId(int id, int provider_id);
+
+    Page<Product> findAllByStatusAndProviderId(String status, int provider_id, Pageable pageable);
 
     @Query(value = "UPDATE  products SET status = ?2 WHERE id = ?1", nativeQuery = true)
     @Modifying
@@ -40,4 +42,8 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, I
     @Query(value = "UPDATE products SET product_description=?1, quantity = ?2 WHERE id = ?3",nativeQuery = true)
     @Modifying
     void updateProduct(String product_description, int quantity, int product_id);
+
+    @Query(value = "UPDATE products SET number_of_sold = number_of_sold + ?2 WHERE id = ?1", nativeQuery = true)
+    @Modifying
+    void updateSoldOut(int product_id, int quantity_purchased);
 }

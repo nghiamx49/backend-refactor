@@ -1,8 +1,12 @@
 package com.example.projectbankend.Services;
 
 import com.example.projectbankend.DTO.ProductDTO;
+import com.example.projectbankend.DTO.ProductDetailDTO;
+import com.example.projectbankend.DTO.RateDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
+import com.example.projectbankend.ExceptionHandler.SystemErrorException;
 import com.example.projectbankend.Mapper.ProductMapper;
+import com.example.projectbankend.Mapper.RateMapper;
 import com.example.projectbankend.Models.*;
 import com.example.projectbankend.Repository.*;
 import com.example.projectbankend.RequestModel.CreateProduct;
@@ -27,6 +31,8 @@ public class ProviderService {
     private ProductRepository productRepository;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private RatingRepository ratingRepository;
 
     public int getProviderId() {
         UserDetails providerPrincipal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -50,14 +56,26 @@ public class ProviderService {
     public List<ProductDTO> getAllOwnProductsByStatus(String status, Integer page) {
         Pageable paging = PageRequest.of(page, 10);
         List<ProductDTO> productDTOS = new ArrayList<>();
-        Page<Product> products = productRepository.findByStatusAndProviderId(status, getProviderId(), paging);
+        Page<Product> products = productRepository.findAllByStatusAndProviderId(status, getProviderId(), paging);
         for(Product product: products) {
             productDTOS.add(ProductMapper.toProductDTO(product));
         }
         return productDTOS;
     }
 
-    public void createProduct(CreateProduct createProduct) throws Exception {
+
+    public ProductDetailDTO getProductDetail(int id) {
+        Product product = productRepository.findByIdAndProviderId(id, getProviderId());
+        if(product == null) throw new NotFoundException("không tìm thấy thông tin sản phẩm");
+        List<Rate> rates= ratingRepository.findAllByProductId(id);
+        List<RateDTO> rateDTOS = new ArrayList<>();
+        for(Rate rate: rates) {
+            rateDTOS.add(RateMapper.ratingDTO(rate));
+        }
+        return ProductMapper.toProductDetailDTO(product,rateDTOS);
+    }
+
+    public void createProduct(CreateProduct createProduct) throws SystemErrorException {
         try {
             productRepository
                     .createNewProduct(createProduct.getName(),
@@ -73,7 +91,7 @@ public class ProviderService {
             }
         }
         catch (Exception e) {
-            throw new Exception(e);
+            throw new SystemErrorException();
         }
     }
 

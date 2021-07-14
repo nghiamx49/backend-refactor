@@ -1,13 +1,9 @@
 package com.example.projectbankend.Controllers;
 
 import com.example.projectbankend.DTO.Response;
-import com.example.projectbankend.RequestModel.LoginRequest;
-import com.example.projectbankend.RequestModel.ProviderRegister;
-import com.example.projectbankend.RequestModel.ResetPassword;
-import com.example.projectbankend.RequestModel.UserRegister;
+import com.example.projectbankend.RequestModel.*;
 import com.example.projectbankend.Services.AuthenticateService;
 import com.example.projectbankend.Services.MailService;
-import com.example.projectbankend.RequestModel.VerifyMail;
 import com.example.projectbankend.Utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -83,6 +79,12 @@ public class AuthenticateController {
     public ResponseEntity<?> verifyMail(@Valid @RequestBody VerifyMail verifyMail) {
         Map<String, Object> data = mailService.sendMail(verifyMail.getEmail());
         return ResponseEntity.ok(Response.response(data, 0));
+    }
+
+    @PostMapping("verify_otp")
+    public ResponseEntity<?> verifyOTP(@Valid @RequestBody VerifyOTP verifyOTP) {
+        mailService.verify_otp(verifyOTP);
+        return ResponseEntity.ok(Response.responseWithoutData());
     }
 
     @PutMapping("reset_password")

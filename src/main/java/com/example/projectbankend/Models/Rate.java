@@ -23,6 +23,7 @@ public class Rate {
 
     private int star;
 
+    @Column(length = 10000)
     private String comment;
 
     @NotNull(message = "Ngày tạo không được bỏ trống")

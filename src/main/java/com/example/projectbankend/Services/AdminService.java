@@ -2,7 +2,6 @@ package com.example.projectbankend.Services;
 
 import com.example.projectbankend.DTO.ProductDTO;
 import com.example.projectbankend.DTO.ProviderDTO;
-import com.example.projectbankend.DTO.RateDTO;
 import com.example.projectbankend.DTO.UserDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
 import com.example.projectbankend.Mapper.ProductMapper;
@@ -10,11 +9,9 @@ import com.example.projectbankend.Mapper.ProviderMapper;
 import com.example.projectbankend.Mapper.UserMapper;
 import com.example.projectbankend.Models.Product;
 import com.example.projectbankend.Models.Provider;
-import com.example.projectbankend.Models.Rate;
 import com.example.projectbankend.Models.User;
 import com.example.projectbankend.Repository.ProductRepository;
 import com.example.projectbankend.Repository.ProviderRepository;
-import com.example.projectbankend.Repository.RatingRepository;
 import com.example.projectbankend.Repository.UserRepository;
 import com.example.projectbankend.RequestModel.UpdateStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -65,6 +61,9 @@ public class AdminService {
 
     public int totalProductPagesByStatus(String status, String keyword) {
         int count = productRepository.countAllByStatus(status);
+        if (!keyword.equals(" ")){
+            return 1;
+        }
         if(count <= 5) {
             return 1;
         }
@@ -107,10 +106,13 @@ public class AdminService {
         return allUsers;
     }
 
-    public void banUser(int userId) throws Exception {
+    public void banUser(int userId , String ban) throws Exception {
         if(userRepository.findById(userId) == null) throw new NotFoundException("không tìm thấy tài khoản người dùng");
         try {
-            userRepository.banUser(userId);
+            if(ban.equals("ban"))
+                userRepository.banUser(userId , true);
+            else
+                userRepository.banUser(userId , false);
         }
         catch (Exception e) {
             throw new Exception(e);

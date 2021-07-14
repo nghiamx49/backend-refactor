@@ -55,7 +55,7 @@ public class ValidationExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> exception(DataIntegrityViolationException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", 400);
-        response.put("message", "tài khoản đã tồn tại");
+        response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }

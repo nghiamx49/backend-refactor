@@ -11,4 +11,5 @@ public class Checkout {
     private int product_id;
     @PaymentType
     private String method;
+    private String total;
 }

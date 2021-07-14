@@ -21,7 +21,6 @@ public class Order {
     @NotNull(message = "Số lượng sản phẩm order không được bỏ ")
     private int quantity_purchased;
 
-    @NotNull(message = "Ngày thanh toán không được bỏ trống")
     private Date date_of_payment;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -39,4 +38,6 @@ public class Order {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id", referencedColumnName = "id")
     private Payment payment;
+
+    private String total;
 }

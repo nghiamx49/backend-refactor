@@ -14,5 +14,6 @@ public class AccountDTO {
     private String phone_number;
     private String email;
     private String role;
+    private String full_name;
 }
 

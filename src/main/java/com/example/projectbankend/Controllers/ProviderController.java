@@ -1,7 +1,10 @@
 package com.example.projectbankend.Controllers;
 
 import com.example.projectbankend.DTO.ProductDTO;
+import com.example.projectbankend.DTO.ProductDetailDTO;
 import com.example.projectbankend.DTO.Response;
+import com.example.projectbankend.ExceptionHandler.NotFoundException;
+import com.example.projectbankend.Models.Product;
 import com.example.projectbankend.Models.Validator.Status;
 import com.example.projectbankend.RequestModel.CreateProduct;
 import com.example.projectbankend.RequestModel.UpdateProduct;
@@ -19,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/provider/")
 @Validated
-public class ProviderController {
+public class    ProviderController {
 
     @Autowired
     private ProviderService providerService;
@@ -33,9 +36,16 @@ public class ProviderController {
         return ResponseEntity.ok(Response.response(data, totalPage));
     }
 
-    @PutMapping("create_product")
+
+    @GetMapping("product_detail/{id}")
+    public ResponseEntity<?> getOwnProductDetail(@PathVariable int id) throws NotFoundException {
+        ProductDetailDTO data = providerService.getProductDetail(id);
+        return ResponseEntity.ok(Response.response(data, 0));
+    }
+
+    @PostMapping("create_product")
     public ResponseEntity<?> createProduct(@Valid @RequestBody CreateProduct createProduct) throws Exception{
-        providerService.createProduct(createProduct);
+            providerService.createProduct(createProduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(Response.responseWithoutData());
     }
 

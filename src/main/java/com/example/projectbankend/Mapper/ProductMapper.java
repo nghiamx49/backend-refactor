@@ -27,6 +27,7 @@ public class ProductMapper {
         productDTOs.setProvider_name(product.getProvider().getStore_name());
         productDTOs.setName(product.getName());
         productDTOs.setUnit_price(product.getUnit_price());
+        productDTOs.setCategory_name(product.getCategory().getName());
         return productDTOs;
     }
 
@@ -45,6 +46,8 @@ public class ProductMapper {
         productDetailDTO.setName(product.getName());
         productDetailDTO.setUnit_price(product.getUnit_price());
         productDetailDTO.setRating((ArrayList<RateDTO>) rates);
+        productDetailDTO.setCategory_name(product.getCategory().getName());
+        productDetailDTO.setProduct_description(product.getProduct_description());
         return productDetailDTO;
     }
 }

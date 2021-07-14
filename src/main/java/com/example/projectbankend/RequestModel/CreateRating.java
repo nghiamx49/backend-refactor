@@ -13,8 +13,6 @@ public class CreateRating {
     @NotNull(message = "phải chọn sản phẩm để đánh giá")
     private int product_id;
     @NotNull(message = "số lượng sao phải chọn")
-    @Min(1)
-    @Max(5)
     private int star;
     @NotBlank(message = "bình luận không được trống")
     private String comment;
