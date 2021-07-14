@@ -13,13 +13,13 @@ import java.util.Date;
 import java.util.List;
 
 @Transactional
-public interface OrderRepository extends PagingAndSortingRepository<Order, CriteriaBuilder.In> {
-    @Query(value = "SELECT new com.example.projectbankend.DTO.CartItemDTO(order.id, product.name, provider.store_name, order.quantity_purchased, product.unit_price) FROM " +
-            "Order order JOIN User user ON order.user.id = user.id " +
-            "JOIN Product product ON order.product.id = product.id " +
-            "JOIN Provider provider ON product.provider.id = provider.id " +
-            "WHERE order.user.id = ?1 AND order.orderStatus.type = 'InCart'")
-    List<CartItemDTO> cart(int userId);
+public interface OrderRepository extends PagingAndSortingRepository<Order, Integer> {
+//    @Query(value = "SELECT new com.example.projectbankend.DTO.CartItemDTO(order.id, product.name, provider.store_name, order.quantity_purchased, product.unit_price) FROM " +
+//            "Order order JOIN User user ON order.user.id = user.id " +
+//            "JOIN Product product ON order.product.id = product.id " +
+//            "JOIN Provider provider ON product.provider.id = provider.id " +
+//            "WHERE order.user.id = ?1 AND order.orderStatus.type = 'InCart'")
+    List<Order> findAllByUserIdAndOrderStatusType(int user_id, String orderStatus_type);
 
     @Query(value = "SELECT * FROM orders WHERE  user_id = ?1 AND product_id = ?2", nativeQuery = true)
     Order findDuplicate(int userId, int productId);

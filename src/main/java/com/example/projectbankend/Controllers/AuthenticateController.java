@@ -57,7 +57,7 @@ public class AuthenticateController {
             authenticateService.registerAsUser(userRegister);
             Map<String, Object> response = new HashMap<>();
             response.put("status", 201);
-            response.put("message", "register successfully");
+            response.put("message", "đăng kí thành công");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }
         catch (Exception e) {
@@ -71,7 +71,7 @@ public class AuthenticateController {
             authenticateService.registerAsProvider(providerRegister);
             Map<String, Object> response = new HashMap<>();
             response.put("status", 201);
-            response.put("message", "register successfully");
+            response.put("message", "đăng kí thành công");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         }
         catch (Exception e) {

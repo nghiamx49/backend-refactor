@@ -109,7 +109,7 @@ public class AuthenticateService implements UserDetailsService {
     public void resetPassword(ResetPassword resetPassword) {
         Account account = accountRepository.findByUsername(resetPassword.getUsername());
         if(account == null) throw new NotFoundException("không tìm thấy tài khoản");
-        accountRepository.updatePassword(account.getId(), resetPassword.getNew_password());
+        accountRepository.updatePassword(account.getId(), passwordEncoder.encode(resetPassword.getNew_password()));
     }
 
 }

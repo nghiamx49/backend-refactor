@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ActionValidator.class)
 public @interface Action {
-    String message() default "hành động không hợp lệ (ban hoặc not_ban)";
+    String message() default "hành động không hợp lệ (increase, decrease, delete)";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
