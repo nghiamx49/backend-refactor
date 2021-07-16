@@ -35,27 +35,27 @@ public class AdminService {
 
     public int totalProvidersPage(String status) {
         int count = providerRepository.countProviderByStatus(status);
-        if(count <= 5) {
+        if(count <= 10) {
             return 1;
         }
-        else if (count % 5 != 0) {
-            return (int) Math.floor(count / 5) + 1;
+        else if (count % 10 != 0) {
+            return (int) Math.floor(count / 10) + 1;
         }
         else  {
-            return (int) Math.floor(count / 5);
+            return (int) Math.floor(count / 10);
         }
     }
 
     public int totalUserPagesByStatus(boolean status) {
         int count = userRepository.countAllByBan(status);
-        if(count <= 5) {
+        if(count <= 10) {
             return 1;
         }
-        else if (count % 5 != 0) {
-            return (int) Math.floor(count / 5) + 1;
+        else if (count % 10 != 0) {
+            return (int) Math.floor(count / 10) + 1;
         }
         else  {
-            return (int) Math.floor(count / 5);
+            return (int) Math.floor(count / 10);
         }
     }
 
@@ -64,19 +64,19 @@ public class AdminService {
         if (!keyword.equals(" ")){
             return 1;
         }
-        if(count <= 5) {
+        if(count <= 10) {
             return 1;
         }
-        else if (count % 5 != 0) {
-            return (int) Math.floor(count / 5) + 1;
+        else if (count % 10 != 0) {
+            return (int) Math.floor(count / 10) + 1;
         }
         else  {
-            return (int) Math.floor(count / 5);
+            return (int) Math.floor(count / 10);
         }
     }
 
     public List<ProviderDTO> findAllProviderByStatus(String status, Integer page) {
-        Pageable paging = PageRequest.of(page, 5);
+        Pageable paging = PageRequest.of(page, 10);
         Page<Provider> allProvider = providerRepository.findAllByStatus(status,paging);
         List<ProviderDTO> providers = new ArrayList<>();
         for(Provider provider: allProvider) {
@@ -97,7 +97,7 @@ public class AdminService {
     };
 
     public List<UserDTO> findAllUserByBanStatus(boolean banStatus, Integer page) {
-        Pageable paging = PageRequest.of(page, 5);
+        Pageable paging = PageRequest.of(page, 10);
         List<UserDTO> allUsers = new ArrayList<>();
         Page<User> users = userRepository.findAllByBan(banStatus, paging);
         for(User user: users) {
@@ -120,7 +120,7 @@ public class AdminService {
     }
 
     public List<ProductDTO> getAllProductsByStatus(String status, Integer page, String keyword) {
-        Pageable paging = PageRequest.of(page, 5);
+        Pageable paging = PageRequest.of(page, 10);
         Page<Product> products = productRepository.findAllByStatus(status,"%" + keyword + "%", paging);
         List<ProductDTO> productDTOS = new ArrayList<>();
         for(Product product: products) {

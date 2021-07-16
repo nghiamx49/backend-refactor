@@ -47,6 +47,11 @@ public class AuthenticateController {
         }
     }
 
+    @GetMapping("check")
+    public ResponseEntity<?> checkAuthenticate() {
+            return ResponseEntity.ok(authenticateService.getAuthenticate());
+    }
+
     @PostMapping("register/user")
     public ResponseEntity<?> registerAsNormalUser(@Valid @RequestBody UserRegister userRegister) throws DataIntegrityViolationException {
         try {

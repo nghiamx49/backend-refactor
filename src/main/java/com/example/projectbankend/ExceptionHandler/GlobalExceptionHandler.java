@@ -1,5 +1,6 @@
 package com.example.projectbankend.ExceptionHandler;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,5 +57,14 @@ public class GlobalExceptionHandler {
         response.put("status", 403);
         response.put("message", ex.getMessage());
         return ResponseEntity.status(403).body(response);
+    }
+
+    @ExceptionHandler(ClassCastException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<?> authenticateFailed(ClassCastException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 401);
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(401).body(response);
     }
 }

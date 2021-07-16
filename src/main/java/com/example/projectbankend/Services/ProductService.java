@@ -29,19 +29,19 @@ public class ProductService {
 
     public int totalProductPages() {
         int count = productRepository.countAllByStatus("Allowed");
-        if(count <= 5) {
+        if(count <= 10) {
             return 1;
         }
-        else if (count % 5 != 0) {
-            return (int) Math.floor(count / 5) + 1;
+        else if (count % 10 != 0) {
+            return (int) Math.floor(count / 10) + 1;
         }
         else  {
-            return (int) Math.floor(count / 5);
+            return (int) Math.floor(count / 10);
         }
     }
 
     public List<ProductDTO> getAllAvailableProducts(Integer page, String keyword) {
-        Pageable paging = PageRequest.of(page, 5);
+        Pageable paging = PageRequest.of(page, 10);
         List<ProductDTO> productDTOS = new ArrayList<>();
         Page<Product> products = productRepository.findAllByStatus("Allowed","%" + keyword + "%", paging);
         for(Product product: products) {

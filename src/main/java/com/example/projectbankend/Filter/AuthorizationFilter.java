@@ -39,14 +39,14 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = authenticateService.loadUserByUsername(username);
                 if(jwtUtil.validateToken(token, userDetails)) {
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                            new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             }
         }
         catch (ExpiredJwtException e) {
-            request.setAttribute("expired", "token hết hạn hoặc không còn giá trị, vui lòng đăng nhập lại");
+            request.setAttribute("expired", "Phiên đăng nhập hết hại, vui lòng đăng nhập lại");
         }
         filterChain.doFilter(request, response);
     }

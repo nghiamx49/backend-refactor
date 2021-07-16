@@ -45,14 +45,14 @@ public class ProviderService {
 
     public int totalProductPagesByStatus(String status) {
         int count = productRepository.countAllByStatusAndProviderId(status, getProviderId());
-        if(count <= 5) {
+        if(count <= 10) {
             return 1;
         }
-        else if (count % 5 != 0) {
-            return (int) Math.floor(count / 5) + 1;
+        else if (count % 10 != 0) {
+            return (int) Math.floor(count / 10) + 1;
         }
         else  {
-            return (int) Math.floor(count / 5);
+            return (int) Math.floor(count / 10);
         }
     }
 

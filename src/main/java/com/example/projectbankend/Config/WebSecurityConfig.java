@@ -53,8 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.httpBasic().authenticationEntryPoint(jwtExceptionHandler);
 
-        http.authorizeRequests().antMatchers("/api/authenticate/**/**").permitAll();
-
+        http.authorizeRequests().antMatchers("/api/authenticate/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/authenticate/check").hasAnyAuthority("admin", "user", "provider");
         http.authorizeRequests().antMatchers("/api/admin/**").hasAuthority("admin");
         http.authorizeRequests().antMatchers("/api/user/**").hasAuthority("user");
         http.authorizeRequests().antMatchers("/api/provider/**").hasAuthority("provider");

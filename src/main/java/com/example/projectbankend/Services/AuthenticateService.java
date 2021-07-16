@@ -16,6 +16,7 @@ import com.example.projectbankend.RequestModel.UserRegister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,9 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AuthenticateService implements UserDetailsService {
@@ -44,6 +43,24 @@ public class AuthenticateService implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
         grantedAuthorityList.add(new SimpleGrantedAuthority(role.getName()));
         return new User(account.getUsername(), account.getPassword(), grantedAuthorityList);
+    }
+
+    public Map<String, Object> getAuthenticate ()  throws ClassCastException{
+        try {
+            UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Object token = SecurityContextHolder.getContext().getAuthentication().getCredentials();
+            AccountDTO accountDetail = accountDetail(principal.getUsername());
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "đăng nhập thành công");
+            response.put("token", token);
+            response.put("account", accountDetail);
+            response.put("isLoggedIn", true);
+            response.put("status", 200);
+            return response;
+        }
+        catch (ClassCastException e) {
+            throw new ClassCastException("Phiên đăng nhập hết hạn, vui lòng đăng nhập lại");
+        }
     }
 
     public AccountDTO accountDetail(String username) {

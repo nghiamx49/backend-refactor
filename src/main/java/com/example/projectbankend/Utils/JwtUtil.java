@@ -32,7 +32,7 @@ public class JwtUtil {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -50,7 +50,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(SignatureAlgorithm.HS256, secret)
-                .setExpiration(new Date(System.currentTimeMillis() + 86400*1000))
+                .setExpiration(new Date(System.currentTimeMillis() + 60000))
                 .compact();
     }
 

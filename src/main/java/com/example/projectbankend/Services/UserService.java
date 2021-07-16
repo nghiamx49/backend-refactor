@@ -4,7 +4,6 @@ import com.example.projectbankend.DTO.CartItemDTO;
 import com.example.projectbankend.DTO.OrderItemDTO;
 import com.example.projectbankend.DTO.UserDTO;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
-import com.example.projectbankend.ExceptionHandler.SystemErrorException;
 import com.example.projectbankend.ExceptionHandler.WrongPasswordException;
 import com.example.projectbankend.Mapper.OrderMapper;
 import com.example.projectbankend.Mapper.UserMapper;
