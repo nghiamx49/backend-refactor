@@ -53,31 +53,21 @@ public class AuthenticateController {
     }
 
     @PostMapping("register/user")
-    public ResponseEntity<?> registerAsNormalUser(@Valid @RequestBody UserRegister userRegister) throws DataIntegrityViolationException {
-        try {
+    public ResponseEntity<?> registerAsNormalUser(@Valid @RequestBody UserRegister userRegister)  {
             authenticateService.registerAsUser(userRegister);
             Map<String, Object> response = new HashMap<>();
             response.put("status", 201);
             response.put("message", "đăng kí thành công");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        }
-        catch (Exception e) {
-            throw new DataIntegrityViolationException(e.getMessage());
-        }
     }
 
     @PostMapping("register/provider")
-    public ResponseEntity<?> registerAsNormalUser(@Valid @RequestBody ProviderRegister providerRegister) throws DataIntegrityViolationException {
-        try {
+    public ResponseEntity<?> registerAsNormalUser(@Valid @RequestBody ProviderRegister providerRegister) {
             authenticateService.registerAsProvider(providerRegister);
             Map<String, Object> response = new HashMap<>();
             response.put("status", 201);
             response.put("message", "đăng kí thành công");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        }
-        catch (Exception e) {
-            throw new DataIntegrityViolationException("tài khoản đã tồn tại");
-        }
     }
 
     @PostMapping("verify_mail")
