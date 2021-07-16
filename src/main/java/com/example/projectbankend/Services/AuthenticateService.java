@@ -1,6 +1,7 @@
 package com.example.projectbankend.Services;
 
 import com.example.projectbankend.DTO.AccountDTO;
+import com.example.projectbankend.ExceptionHandler.HadExistedException;
 import com.example.projectbankend.ExceptionHandler.NotAllowedException;
 import com.example.projectbankend.ExceptionHandler.NotFoundException;
 import com.example.projectbankend.Mapper.AccountMapper;
@@ -80,8 +81,11 @@ public class AuthenticateService implements UserDetailsService {
         return passwordEncoder.matches(loginRequest.getPassword(), account.getPassword());
     }
 
-    public void registerAsUser(UserRegister userRegister) throws Exception {
-        try {
+    public void registerAsUser(UserRegister userRegister) throws HadExistedException {
+        if(accountRepository.findByUsername(userRegister.getUsername()) != null)
+            throw new HadExistedException("tên đăng nhập đã tồn tại, vui lòng chọn tên đăng nhập khác!");
+        if(accountRepository.findByEmail(userRegister.getEmail()) != null)
+            throw new HadExistedException("email đã tồn tại, vui lòng dùng email khác");
             accountRepository.createAccount(userRegister.getUsername()
                     , passwordEncoder.encode(userRegister.getPassword())
                     , userRegister.getAddress()
@@ -95,14 +99,13 @@ public class AuthenticateService implements UserDetailsService {
                     , userRegister.getZipcode()
                     , userAccount.getId()
             );
-        }
-        catch (Exception e) {
-            throw new Exception(e);
-        }
     }
 
-    public void registerAsProvider(ProviderRegister providerRegister) throws Exception {
-        try {
+    public void registerAsProvider(ProviderRegister providerRegister) throws HadExistedException {
+        if(accountRepository.findByUsername(providerRegister.getUsername()) != null)
+            throw new HadExistedException("tên đăng nhập đã tồn tại, vui lòng chọn tên đăng nhập khác!");
+        if(accountRepository.findByEmail(providerRegister.getEmail()) != null)
+            throw new HadExistedException("email đã tồn tại, vui lòng dùng email khác");
             accountRepository.createAccount(providerRegister.getUsername()
                     , passwordEncoder.encode(providerRegister.getPassword())
                     , providerRegister.getAddress()
@@ -117,10 +120,6 @@ public class AuthenticateService implements UserDetailsService {
                     providerRegister.getStore_name(),
                     providerAccount.getId()
             );
-        }
-        catch (Exception e) {
-            throw new Exception(e);
-        }
     }
 
     public void resetPassword(ResetPassword resetPassword) {

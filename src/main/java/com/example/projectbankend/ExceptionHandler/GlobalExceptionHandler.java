@@ -67,4 +67,13 @@ public class GlobalExceptionHandler {
         response.put("message", ex.getMessage());
         return ResponseEntity.status(401).body(response);
     }
+
+    @ExceptionHandler(HadExistedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<?> registerException(HadExistedException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 400);
+        response.put("message", ex.getMessage());
+        return ResponseEntity.status(400).body(response);
+    }
 }
